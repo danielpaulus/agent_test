@@ -10,7 +10,7 @@ import {
 } from 'llamaindex';
 import 'dotenv/config';
 import { ChecklyClient } from './checklyclient';
-const groqapikey = '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';
+const groqapikey = process.env.GROQ_API_KEY;
 export class ChecklyAgent {
   private readonly ChecklyClient: ChecklyClient = new ChecklyClient();
   agent: ReActAgent;
