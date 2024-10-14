@@ -71,6 +71,9 @@ export class AlertDto {
       // Return the value only if it's a valid array, otherwise return an empty array
       return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
+      if (e instanceof SyntaxError) {
+        return [value];
+      }
       // If parsing fails, return an empty array
       console.trace(e);
       return [];
