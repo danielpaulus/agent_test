@@ -26,7 +26,7 @@ app.message(`hey help`, async ({ message, context }) => {
   });
 });
 
-app.message('Hey Marvin', async ({ say }) => {
+app.message('Hey SREBot', async ({ say }) => {
   await say('helloworld');
 });
 

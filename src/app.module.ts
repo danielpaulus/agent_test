@@ -6,9 +6,16 @@ import { ChecklyService } from './checkly/checkly.service';
 import { DatabaseModule } from './knex/knex.module';
 import { LokiAgentService } from './loki_agent/loki_agent.service';
 import { ConversationService } from './conversation/conversation.service';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
+    DatabaseModule,
+  ],
   controllers: [AppController, ChecklyController],
   providers: [
     AppService,

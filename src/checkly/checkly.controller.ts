@@ -1,4 +1,4 @@
-import { Post, Body, Controller } from '@nestjs/common';
+import { Post, Body, Controller, Get } from '@nestjs/common';
 import { ChecklyService } from './checkly.service';
 import { AlertDto } from './alertDTO';
 
@@ -9,5 +9,9 @@ export class ChecklyController {
   @Post()
   async receiveAlert(@Body() alertData: AlertDto): Promise<string> {
     return this.checklyService.alertReceived(alertData);
+  }
+  @Get('alerts')
+  async getAlerts(): Promise<any[]> {
+    return this.checklyService.getAlerts();
   }
 }

@@ -8,6 +8,15 @@ import { Knex } from 'knex';
 import { InjectConnection } from 'nest-knexjs';
 
 export class ChecklyService {
+  async getAlerts(): Promise<any[]> {
+    try {
+      const alerts = await this.knex('checkly_alerts').select('*');
+      return alerts;
+    } catch (error) {
+      console.error('Error fetching alerts:', error);
+      throw new Error('Could not fetch alerts');
+    }
+  }
   private readonly checklyClient: ChecklyClient = new ChecklyClient();
   private readonly checklyAgent: ChecklyAgent = new ChecklyAgent();
   processing: boolean = false;
@@ -52,6 +61,7 @@ export class ChecklyService {
       await this.knex('checkly_alerts').insert({
         id: uuidv4(),
         value: alertSummary,
+        created_at: new Date().toISOString(),
       });
     } catch (error) {
       console.error(`Error processing alert: ${error.message}`);
