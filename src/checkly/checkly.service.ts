@@ -30,29 +30,34 @@ export class ChecklyService {
     this.processing = true;
 
     //console.log(data);
-    const agentResponse = await this.checklyAgent.queryAgent(
-      data.CHECK_ID,
-      data.CHECK_RESULT_ID,
-    );
-    const alertSummary: ChecklyAlertSummary = {
-      alertTitle: data.ALERT_TITLE,
-      alertType: data.ALERT_TYPE,
-      checkId: data.CHECK_ID,
-      checkResultId: data.CHECK_RESULT_ID,
-      checkName: data.CHECK_NAME,
-      checkType: data.CHECK_TYPE,
-      groupName: data.GROUP_NAME,
-      runLocation: data.RUN_LOCATION,
-      apiCheckResponseStatusCode: data.API_CHECK_RESPONSE_STATUS_CODE,
-      apiCheckResponseStatusText: data.API_CHECK_RESPONSE_STATUS_TEXT,
-      aiSummary: agentResponse.answer,
-    };
-    console.log(`Alert Summary: ${JSON.stringify(alertSummary)}`);
-    await this.knex('checkly_alerts').insert({
-      id: uuidv4(),
-      value: alertSummary,
-    });
-    this.processing = false;
+    try {
+      const agentResponse = await this.checklyAgent.queryAgent(
+        data.CHECK_ID,
+        data.CHECK_RESULT_ID,
+      );
+      const alertSummary: ChecklyAlertSummary = {
+        alertTitle: data.ALERT_TITLE,
+        alertType: data.ALERT_TYPE,
+        checkId: data.CHECK_ID,
+        checkResultId: data.CHECK_RESULT_ID,
+        checkName: data.CHECK_NAME,
+        checkType: data.CHECK_TYPE,
+        groupName: data.GROUP_NAME,
+        runLocation: data.RUN_LOCATION,
+        apiCheckResponseStatusCode: data.API_CHECK_RESPONSE_STATUS_CODE,
+        apiCheckResponseStatusText: data.API_CHECK_RESPONSE_STATUS_TEXT,
+        aiSummary: agentResponse.answer,
+      };
+      console.log(`Alert Summary: ${JSON.stringify(alertSummary)}`);
+      await this.knex('checkly_alerts').insert({
+        id: uuidv4(),
+        value: alertSummary,
+      });
+    } catch (error) {
+      console.error(`Error processing alert: ${error.message}`);
+    } finally {
+      this.processing = false;
+    }
     return 'OK';
   }
 

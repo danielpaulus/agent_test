@@ -7,7 +7,7 @@ export class ChecklyController {
   constructor(private readonly checklyService: ChecklyService) {}
 
   @Post()
-  async findAll(@Body() alertData: AlertDto): Promise<string> {
+  async receiveAlert(@Body() alertData: AlertDto): Promise<string> {
     return this.checklyService.alertReceived(alertData);
   }
 }

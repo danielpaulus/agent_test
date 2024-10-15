@@ -32,6 +32,7 @@ https://www.promptingguide.ai/guides/optimizing-prompts
 - https://www.youtube.com/@matthew_berman
 - agents explained: https://www.youtube.com/watch?v=ZYf9V2fSFwU
 
+
 ## Papers
 - Autogen: https://arxiv.org/pdf/2308.08155
 
@@ -47,3 +48,9 @@ https://github.com/princeton-nlp/SWE-agent/tree/main
 
 ## link collections
  - https://github.com/e2b-dev/awesome-ai-agents
+
+ RAG
+
+
+ ## context
+ - other status pages, provider info

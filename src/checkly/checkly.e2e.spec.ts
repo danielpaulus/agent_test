@@ -1,25 +1,34 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ChecklyController } from './checkly.controller';
+import { INestApplication } from '@nestjs/common';
+import * as request from 'supertest';
+import { AppModule } from '../app.module';
+jest.setTimeout(60000);
+describe('Checkly E2E Test', () => {
+  let app: INestApplication;
 
-describe('ChecklyController', () => {
-  let controller: ChecklyController;
-
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [ChecklyController],
+  beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
     }).compile();
 
-    controller = module.get<ChecklyController>(ChecklyController);
+    app = moduleFixture.createNestApplication();
+    await app.init();
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-    controller.receiveAlert(exampleAlert);
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('/checkly (POST ALERT)', () => {
+    return request(app.getHttpServer())
+      .post('/checkly')
+      .send(exampleAlert)
+      .expect(201);
   });
 });
 
 const exampleAlert = {
-  CHECK_NAME: 'fail50',
+  CHECK_NAME: 'e2e_test_ignore_me',
   CHECK_ID: 'b68422ae-6528-45a5-85a6-e85e1be9de2e',
   CHECK_TYPE: 'MULTI_STEP',
   GROUP_NAME: '',

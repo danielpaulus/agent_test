@@ -1,4 +1,22 @@
 // Your imports go here
+/*
+Agent
+
+Imagine you are an agent solving users problems. Use this approach:
+- first create a thought what you want to do 
+- then think about an action using your tools
+- observe the response, and decide if you want to continue or not
+
+"tell me what's wrong with checkly"
+Thought: I need to check the logs
+Action: call getLogs with the checkid and checkresultid
+Observe: logs...
+
+Multi Agent 
+
+
+
+*/ 
 import {
   //OpenAI,
   Ollama,
