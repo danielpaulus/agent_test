@@ -1,10 +1,18 @@
 import { App, LogLevel } from '@slack/bolt';
+import { PlannerAgent } from './agent';
+const agent = new PlannerAgent();
+if (process.env.NODE_ENV === 'development') {
+  console.log('Starting planner agent');
+  agent.init();
+} else {
+  console.log('Planner agent not started in production');
+}
 
 export const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
   token: process.env.SLACK_AUTH_TOKEN,
   appToken: process.env.SLACK_APP_TOKEN,
-  socketMode: true,
+  socketMode: process.env.NODE_ENV === 'development',
   logLevel:
     process.env.NODE_ENV !== 'production' ? LogLevel.DEBUG : LogLevel.INFO,
 });
@@ -32,6 +40,33 @@ app.message('Hey SREBot', async ({ say }) => {
 
 app.message('whatismyuserid', async ({ context, say }) => {
   await say(context.userId!);
+});
+
+app.event('app_mention', async ({ event, context }) => {
+  try {
+    //needs reactions:write
+    /*await app.client.reactions.add({
+      token: context.botToken,
+      name: 'wave',
+      channel: event.channel,
+      timestamp: event.ts,
+    });*/
+    const greeting = app.client.chat.postMessage({
+      token: context.botToken,
+      channel: event.channel,
+      text: `Hello <@${event.user}>! Let me think..`,
+    });
+    const aiResponse = agent.queryAgent(event.text);
+    await greeting;
+    const t = await aiResponse;
+    app.client.chat.postMessage({
+      token: context.botToken,
+      channel: event.channel,
+      text: t,
+    });
+  } catch (error) {
+    console.error('Error reacting to mention:', error);
+  }
 });
 
 app.message(

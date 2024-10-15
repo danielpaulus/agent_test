@@ -8,6 +8,7 @@ import { LokiAgentService } from './loki_agent/loki_agent.service';
 import { ConversationService } from './conversation/conversation.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { SlackbotModule } from './slackbot/slackbot.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { join } from 'path';
       rootPath: join(__dirname, '..', 'public'),
     }),
     DatabaseModule,
+    SlackbotModule,
   ],
   controllers: [AppController, ChecklyController],
   providers: [

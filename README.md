@@ -54,3 +54,6 @@ https://github.com/princeton-nlp/SWE-agent/tree/main
 
  ## context
  - other status pages, provider info
+
+ # misc
+ - go here to create slack app: https://api.slack.com/apps
