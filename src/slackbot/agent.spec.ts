@@ -1,39 +1,43 @@
-import { ChecklyAgent } from './agent';
+import { PlannerAgent } from './agent';
+import {
+  OpenAI,
+  //Ollama,
+  Settings,
+
+  //Groq,
+} from 'llamaindex';
+import 'dotenv/config';
 jest.setTimeout(30000);
 describe('ChecklyService', () => {
-  const client: ChecklyAgent = new ChecklyAgent();
-  client.init();
-
   beforeEach(async () => {});
 
   it('should be defined', async () => {
-    const resp = await client.queryAgent(
-      exampleAlert.CHECK_ID,
-      exampleAlert.CHECK_RESULT_ID,
-    );
-    expect(resp).toBeDefined();
+    const llm = new OpenAI({
+      model: 'gpt-3.5-turbo',
+      additionalChatOptions: { response_format: { type: 'json_object' } },
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+    const prompt = `assume you have the following agents available: 
+    1. The Grafana Loki Agent, which can analyze the system services and backend logs for you. It needs to know how long to look back in minutes and which services to query. It has the checkly-api and the checkly-alerting-service available. 
+    2. The Checkly Agent to download and look for synthetic monitoring errors. Synthetic checks analyse the frontend. They can make API calls and are using Playwright to execute browser e2e tests.  
+    Figure out which agents you need to ask to solve the user problem. You can ask for more than one.
+    Create prompts to send your agents to respond to the user prompt.
+    use a json template like : [{ "agent": "agent_name", "prompt": "prompt_text" }]
+    Output your response in a json format. Do NOT be conversational. Only output JSON with agent and prompt.   `;
+
+    const response = await llm.chat({
+      messages: [
+        {
+          role: 'system',
+          content: prompt,
+        },
+        {
+          role: 'user',
+          content: `Here is the user question: \n------\n${'sap'}\n------`,
+        },
+      ],
+    });
+
+    console.log(response.message.content);
   });
 });
-
-const exampleAlert = {
-  CHECK_NAME: 'fail50',
-  CHECK_ID: 'b68422ae-6528-45a5-85a6-e85e1be9de2e',
-  CHECK_TYPE: 'MULTI_STEP',
-  GROUP_NAME: '',
-  ALERT_TITLE: 'fail50 has failed',
-  ALERT_TYPE: 'ALERT_FAILURE',
-  CHECK_RESULT_ID: '995b7d3c-d42a-443a-a8b3-194319436ba7',
-  RESPONSE_TIME: '1649',
-  API_CHECK_RESPONSE_STATUS_CODE: '',
-  API_CHECK_RESPONSE_STATUS_TEXT: '',
-  RUN_LOCATION: 'Frankfurt',
-  RESULT_LINK:
-    'https://app.checklyhq.com/checks/b68422ae-6528-45a5-85a6-e85e1be9de2e/results/multi_step/995b7d3c-d42a-443a-a8b3-194319436ba7',
-  SSL_DAYS_REMAINING: '',
-  SSL_CHECK_DOMAIN: '',
-  STARTED_AT: '2024-10-09T13:30:22.741Z',
-  TAGS: '',
-  $RANDOM_NUMBER: '271',
-  $UUID: '94a5dc1e-9d84-42d5-8a9c-e0fd859616d9',
-  moment: 'October 09, 2024',
-};

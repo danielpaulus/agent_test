@@ -11,7 +11,7 @@ async function bootstrap() {
   });
   console.log(process.env.NODE_ENV);
   (async () => {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.SLACKBOT_ENABLE === 'true') {
       await app.start();
       console.log('⚡️ Bolt app is running!');
     } else {

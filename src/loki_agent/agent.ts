@@ -1,6 +1,5 @@
 // Your imports go here
 import {
-  //OpenAI,
   Ollama,
   FunctionTool,
   ReActAgent,
@@ -26,7 +25,14 @@ export class LokiAgent {
       model: 'llama3.1:8b-instruct-fp16',
       //model: 'llama3.1',
     });*/
-    Settings.llm = new Groq({
+    /*Settings.llm = new OpenAI({
+      //model: 'gpt-3.5-turbo',
+      model: 'gpt-4o',
+      //additionalChatOptions: { response_format: { type: 'json_object' } },
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+*/
+    new Groq({
       apiKey: groqapikey,
       model: 'llama3-70b-8192',
     });
@@ -102,24 +108,22 @@ export class LokiAgent {
     console.log(`querying agent `);
     const response = await this.agent.chat({
       message: `
-        You are a senior devops expert reading logs to give helpful
-        insights to the team. You have some tools available to query the logs.
-        Here is the request you received and must give an answer to: "${question}" 
-        Make sure to call your tools with the correct parameters. 
-        Explain the errors you found and what you think the root cause is.
+   call each tool only once. In your final response be  detailed.
+   Answer in this format:
+    Findings: your findings and a summary of the logs
+    Explanation of Errors: explain errors you found
+    Suggested Fix: what you suggest to fix the errors
+   Here is the task: 
+        ${question}
+
          `,
     });
-    console.log(response.metadata);
+    console.log(response);
     const content = response.message.content;
     if (typeof content === 'string') {
       // Extract Thought
-      const thoughtMatch = content.match(/Thought:\s*(.*)/);
-      const thought = thoughtMatch ? thoughtMatch[1].trim() : null;
 
-      // Extract Answer
-      const answerMatch = content.match(/Answer:\s*({[\s\S]*})/);
-      const answer = answerMatch ? JSON.parse(answerMatch[1].trim()) : null;
-      return { thought, answer };
+      return { thought: content, answer: content };
     } else {
       return { thought: 'none', answer: content };
     }

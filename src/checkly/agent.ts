@@ -16,9 +16,9 @@ Multi Agent
 
 
 
-*/ 
+*/
 import {
-  //OpenAI,
+  OpenAI,
   Ollama,
   FunctionTool,
   ReActAgent,
@@ -37,11 +37,18 @@ export class ChecklyAgent {
       model: 'llama3.1:8b-instruct-fp16',
       //model: 'llama3.1',
     });*/
+    /*
     Settings.llm = new Groq({
       apiKey: groqapikey,
       model: 'llama3-70b-8192',
     });
-
+    */
+    Settings.llm = new OpenAI({
+      //model: 'gpt-3.5-turbo',
+      model: 'gpt-4o',
+      //additionalChatOptions: { response_format: { type: 'json_object' } },
+      apiKey: process.env.OPENAI_API_KEY,
+    });
     Settings.callbackManager.on('llm-tool-call', (event) => {
       console.log(event.detail);
     });
