@@ -29,7 +29,7 @@
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
     "knex": "^3.1.0",
-    "llamaindex": "^0.6.20",
+    "llamaindex": "^0.6.22",
     "nest-knexjs": "^0.0.24",
     "pg": "^8.13.0",
     "reflect-metadata": "^0.2.0",

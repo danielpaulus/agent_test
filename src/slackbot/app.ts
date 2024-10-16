@@ -1,12 +1,7 @@
 import { App, LogLevel } from '@slack/bolt';
 import { PlannerAgent } from './agent';
 const agent = new PlannerAgent();
-if (process.env.SLACKBOT_ENABLE === 'true') {
-  console.log('Starting planner agent');
-  agent.init();
-} else {
-  console.log('Planner agent not started in production');
-}
+agent.init();
 
 export const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET,

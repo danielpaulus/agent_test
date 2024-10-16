@@ -11,6 +11,13 @@ describe('ChecklyService', () => {
 
   beforeEach(async () => {});
 
+  it('get failed results', async () => {
+    const result = await client.getFailedAPIResults(checkid);
+
+    console.log(JSON.stringify(result));
+    expect(result).toBeDefined();
+  });
+
   it('should be defined', async () => {
     const result = await client.getCheck(checkid);
     expect(result).toBeDefined();

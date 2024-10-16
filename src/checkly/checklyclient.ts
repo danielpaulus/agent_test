@@ -69,6 +69,25 @@ export class ChecklyClient {
       });
     });
   }
+  // New function
+  async getFailedAPIResults(checkid: string): Promise<CheckResult[]> {
+    const url = `https://api.checklyhq.com/v1/check-results/${checkid}?limit=10&page=1&hasFailures=true&resultType=FINAL`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${this.apiKey}`,
+        'X-Checkly-Account': this.accountId,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch failed API results: ${response.status}`);
+    }
+    const json = await response.json();
+    const result = json.map((x) => plainToClass(CheckResult, x));
+    return result;
+  }
 }
 
 export type ErrorMessage = {
@@ -141,6 +160,7 @@ export class CheckResult {
   attempts: number;
   resultType: string;
   sequenceId: string;
+
   getLog(): string {
     const jobLog =
       this.apiCheckResult?.jobLog ||

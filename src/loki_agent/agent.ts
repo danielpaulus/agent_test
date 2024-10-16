@@ -1,5 +1,6 @@
 // Your imports go here
 import {
+  OpenAI,
   Ollama,
   FunctionTool,
   ReActAgent,
@@ -25,14 +26,16 @@ export class LokiAgent {
       model: 'llama3.1:8b-instruct-fp16',
       //model: 'llama3.1',
     });*/
-    /*Settings.llm = new OpenAI({
+    /*const o = new OpenAI({
       //model: 'gpt-3.5-turbo',
       model: 'gpt-4o',
       //additionalChatOptions: { response_format: { type: 'json_object' } },
       apiKey: process.env.OPENAI_API_KEY,
     });
-*/
-    new Groq({
+    o.lazySession();
+    Settings.llm = o;*/
+
+    Settings.llm = new Groq({
       apiKey: groqapikey,
       model: 'llama3-70b-8192',
     });
