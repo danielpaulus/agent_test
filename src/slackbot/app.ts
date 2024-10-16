@@ -1,7 +1,7 @@
 import { App, LogLevel } from '@slack/bolt';
 import { PlannerAgent } from './agent';
+const agent = new PlannerAgent();
 if (process.env.SLACKBOT_ENABLE === 'true') {
-  const agent = new PlannerAgent();
   console.log('Starting planner agent');
   agent.init();
 } else {
