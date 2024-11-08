@@ -11,6 +11,15 @@ https://openwebui.com/
  - planning "plan steps, think more slowly, explain your reasoning step by step, forces to think through"
  - multi agent
 
+ "Chat tokens: As chat LLMs rose to popularity in 2023, the conversational nature of LLMs started to be a leading use case. Tokenizers have been adapted to this direction by the addition of tokens that indicate the turns in a conversation and the roles of each speaker. These special tokens include:
+            <|user|>
+            <|assistant|>
+            <|system|>"
+- tokenization hat einen einfluss auf context size, three length tokens== mehr text per token windows als one length
+
+Choosing the highest scoring token every time is called greedy decoding. It’s what happens if you set the temperature parameter to zero in an LLM.
+
+
 ## Hosting
 llmstudio
 groq
@@ -39,6 +48,9 @@ https://www.promptingguide.ai/guides/optimizing-prompts
 ## Architecture - How to build?
 https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat/
 
+# mistral 
+- https://docs.mistral.ai/guides/prompting_capabilities/
+
 ## Interesting Github Projects
 - Multiagent system: https://github.com/geekan/MetaGPT
 - https://aider.chat/ code assistant https://github.com/Aider-AI/aider
@@ -46,8 +58,12 @@ https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat/
 https://github.com/All-Hands-AI/OpenHands
 https://github.com/princeton-nlp/SWE-agent/tree/main
 
+- https://github.com/Doriandarko/claude-engineer simple code
+
 ## link collections
  - https://github.com/e2b-dev/awesome-ai-agents
+ - https://www.aixploria.com/en/category/ai-autonomous/
+ https://aitoolfor.org/categories/agents/
 
  RAG
 
@@ -57,3 +73,6 @@ https://github.com/princeton-nlp/SWE-agent/tree/main
 
  # misc
  - go here to create slack app: https://api.slack.com/apps
+
+ # new stuff
+ https://github.com/microsoft/BitNet
